@@ -63,7 +63,7 @@ func handleTracerouteProbes(opts *traceroute.TracerouteOptions, wg *sync.WaitGro
 // TODO: add a "map the routes" all
 func main() {
 	sourceAddr := flag.String("srcAddr", "", "source address")
-	sourcePort := flag.Int("srcPort", 0, "source port")
+	sourcePort := flag.Int("srcPort", 33434, "source port")
 
 	dstAddr := flag.String("dstAddr", "", "destination address")
 	dstPort := flag.Int("dstPort", 33434, "destination port")
@@ -107,9 +107,6 @@ func main() {
 		ProbeWait:    time.Second * time.Duration(*probeWait),
 	}
 
-	if opts.SourcePort == 0 {
-		opts.SourcePort = opts.DestinationPort
-	}
 	if opts.SourceAddr == nil {
 		a, err := traceroute.GetLocalIP()
 		if err != nil {
