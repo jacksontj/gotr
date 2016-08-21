@@ -15,21 +15,17 @@ import (
 // take a given name, and return an IP. This includes converting from ip -> string
 // and potentially doing a DNS lookup
 func parseCLIAddr(a string) net.IP {
-	return net.ParseIP(a)
+	if ip := net.ParseIP(a); ip != nil {
+		return ip
+	} else {
+		ips, err := net.LookupIP(a)
+		if err != nil {
+			logrus.Debugf("Unable to lookup %s: %v", a, err)
+			return nil
+		}
+		return ips[0]
+	}
 }
-
-/*
-
-type ProbeResponse struct {
-	Success      bool
-	Error        error
-	Address      net.IP
-	Duration     time.Duration
-	TTL          int
-	ResponseSize int
-}
-
-*/
 
 func handleTracerouteProbes(opts *traceroute.TracerouteOptions, wg *sync.WaitGroup) {
 	prevTTL := 0
