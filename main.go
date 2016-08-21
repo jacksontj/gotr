@@ -75,6 +75,7 @@ func main() {
 
 	probeTimeout := flag.Int("probeTimeout", 1, "probe timeout (in seconds)")
 	probeCount := flag.Int("probeCount", 3, "number of probes to do at each TTL")
+	probeWait := flag.Int("probeWait", 0, "time to wait between each probe (in seconds)")
 
 	flag.Parse()
 
@@ -103,7 +104,7 @@ func main() {
 		// Probe options
 		ProbeTimeout: time.Second * time.Duration(*probeTimeout),
 		ProbeCount:   *probeCount,
-		//ProbeWait: 0,
+		ProbeWait:    time.Second * time.Duration(*probeWait),
 	}
 
 	if opts.SourcePort == 0 {
